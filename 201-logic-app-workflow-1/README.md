@@ -74,7 +74,7 @@ Note : if you never provided your GitHub account in the Azure portal before, the
   * This deployment script will create a Logic App which is using the Azure Functions deployed above
   * Please refer the next section if you will deploy manually
 
-### 2. Update both API Connection's credentials for Outlook and OneDrve accounts
+### 2. Update both API Connection's credentials for Outlook and Azure Blob Storage accounts
 
 
 ## Run workflow
