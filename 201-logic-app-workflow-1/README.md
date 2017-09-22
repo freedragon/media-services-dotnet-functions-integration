@@ -69,7 +69,7 @@ Note : if you never provided your GitHub account in the Azure portal before, the
 
 ### 1. Deploy Logic App 
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fshigeyf%2Fmedia-services-dotnet-functions-integration%2Fmaster%2F201-logic-app-workflow-1%2Fazuredeploy-logic-app-workflow.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fshigeyf%2Fmedia-services-dotnet-functions-integration%2Fmaster%2F201-logic-app-workflow-1%2Fazuredeploy-logic-app-workflow-blobtrigger.json)
 
   * This deployment script will create a Logic App which is using the Azure Functions deployed above
   * Please refer the next section if you will deploy manually
@@ -81,8 +81,8 @@ Note : if you never provided your GitHub account in the Azure portal before, the
 1. Upload a source asset to a source container of your Azure Blob Storage account (specified with **SourceStorageAccountName** parameter in the deployment parameters)
 2. Create IngestAssetConfig JSON file or use a sample file.
 3. Run workflow
-  * Upload IngestAssetConfig JSON file to /AMSImports folder of your OneDrive account
-  * Workflow will be automatically triggered in cevery onfigured duration (default - 3 minutes)
+  * Upload IngestAssetConfig JSON file to /inputs folder of your Azure Blob Storage account (specified with **SourceStorageAccountName** parameter in the deployment parameters)
+  * Workflow will be automatically triggered in cevery onfigured duration (default - 1 minutes)
 
 
 ## Sample **IngestAssetConfig** JSON
