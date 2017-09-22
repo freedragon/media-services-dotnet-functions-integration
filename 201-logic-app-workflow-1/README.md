@@ -1,4 +1,4 @@
-﻿---
+---
 services: media-services,functions
 platforms: dotnet
 author: shigeyf
@@ -21,7 +21,7 @@ Create a Media Services account in your subscription if don't have it already.
 
 ### 2. Create a Service Principal
 
-Create a Service Principal and save the password. It will be needed in step #4. To do so, go to the API tab in the account ([follow this article](https://docs.microsoft.com/en-us/azure/media-services/media-services-portal-get-started-with-aad#service-principal-authentication))
+Create a Service Principal and save the password. It will be needed in step 4. To do so, go to the API tab in the account ([follow this article](https://docs.microsoft.com/en-us/azure/media-services/media-services-portal-get-started-with-aad#service-principal-authentication))
 
 ### 3. Make sure the AMS streaming endpoint is started
 
@@ -33,8 +33,9 @@ To enable streaming, go to the Azure portal, select the Azure Media Services acc
 
 ### 4. Deploy the Azure functions
 
-1) Fork this repo to your own repo
-2) Deploy Azure Functions and select the **"201-logic-app-workflow-1"** Project (IMPORTANT!)
+4.1. Fork this repo to your own repo
+
+4.2. Deploy Azure Functions and select the **"201-logic-app-workflow-1"** Project (IMPORTANT!)
 
 Follow the guidelines in the [git tutorial](1-CONTRIBUTION-GUIDE/git-tutorial.md) for details on how to fork the project and use Git properly with this project.
 
@@ -47,7 +48,7 @@ Note : if you never provided your GitHub account in the Azure portal before, the
     * App Service Plan (Dedicated Plan) – There is no timeout (if AlwaysOn is enabled)
   * If a deployment target resource group already contains an App Service Plan (Dedicated Plan), Azure Functions app will be contained in that App Service Plan (Dedicated Plan)
 
-3) Check App Settings of Azure Functions @ Azure Portal
+4.3. Check App Settings of Azure Functions @ Azure Portal
   * Plaese makes sure if the following environment Key/Value pairs in the "App Settings" of your Azure Functions are correctly configured
 
     | Key | Value Description |
@@ -60,20 +61,20 @@ Note : if you never provided your GitHub account in the Azure portal before, the
     | **MediaServicesStorageAccountName** | Your Media Services Storage Account Name |
     | **MediaServicesStorageAccountKey** | Your Media Services Storage Account Key |
 
-4) Check if Azure Functions are deployed from your Github repo into your Azure Function App  @ Azure Portal
+4.4. Check if Azure Functions are deployed from your Github repo into your Azure Function App  @ Azure Portal
   * If not, please do "Sync" manually from "Configure continusous integration" in Function app settings
 
 
 ## Deploy Media Workflow Logic Apps
 
-1) Deploy Logic App 
+### 1. Deploy Logic App 
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fshigeyf%2Fmedia-services-dotnet-functions-integration%2Fmaster%2F201-logic-app-workflow-1%2Fazuredeploy-logic-app-workflow.json)
 
   * This deployment script will create a Logic App which is using the Azure Functions deployed above
   * Please refer the next section if you will deploy manually
 
-2) Update both API Connection's credentials for Outlook and OneDrve accounts
+### 2. Update both API Connection's credentials for Outlook and OneDrve accounts
 
 
 ## Run workflow
