@@ -45,6 +45,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     string assetid = data.AssetId;
     string cencAuthPolicyId = data.CencAuthPolicyId;
     string cencAssetDeliveryPolicyId = data.CencAssetDeliveryPolicyId;
+    string keyId = null;
     try
     {
         // Load AMS account context
@@ -53,8 +54,17 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             new AzureAdClientSymmetricKey(_amsClientId, _amsClientSecret),
             AzureEnvironments.AzureCloudEnvironment);
         AzureAdTokenProvider tokenProvider = new AzureAdTokenProvider(tokenCredentials);
+        
+        // there is a bug of the DataContext in SDK,
+        // so we need to have different DataContext
+        // for removing dynamic encryption policies if the asset already has
+        if (!DeleteMultiDrmAuthorizationPolicyToAsset(tokenProvider, assetid, log))
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest, new { error = "Asset not found" });
+        }
+        
+        // using new CloudMediaContext for applying dynamic encryption policies
         _context = new CloudMediaContext(new Uri(_amsRestApiEndpoint), tokenProvider);
-
         var asset = _context.Assets.Where(a => a.Id == assetid).FirstOrDefault();
         if (asset == null)
         {
@@ -62,9 +72,6 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             return req.CreateResponse(HttpStatusCode.BadRequest, new { error = "Asset not found" });
         }
         log.Info("Asset found, AssetId : " + asset.Id);
-
-        //assetid = asset.Id;
-        DeleteMultiDrmAuthorizationPolicyToAsset(asset, log);
 
         // ContentKeyType.CommonEncryption
         IContentKey cencKey = CreateContentKeyCommonType();
@@ -96,6 +103,8 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         }
         log.Info("Asset Delivery Policy (CENC) found, Policy Id : " + cencAssetPol.Id);
         asset.DeliveryPolicies.Add(cencAssetPol);
+        
+        keyId = cencKey.Id;
     }
     catch (Exception ex)
     {
@@ -105,13 +114,24 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     
     return req.CreateResponse(HttpStatusCode.OK, new
     {
-        greeting = $"Hello!"
+        CencKeyId = keyId
     });
 }
 
 //private static readonly object listLock = new object();
-static public void DeleteMultiDrmAuthorizationPolicyToAsset(IAsset asset, TraceWriter log)
+static public bool DeleteMultiDrmAuthorizationPolicyToAsset(AzureAdTokenProvider tokenProvider, string assetId, TraceWriter log)
 {
+    // using new CloudMediaContext for removing dynamic encryption policies
+    _context = new CloudMediaContext(new Uri(_amsRestApiEndpoint), tokenProvider);
+    
+    var asset = _context.Assets.Where(a => a.Id == assetId).FirstOrDefault();
+    if (asset == null)
+    {
+        log.Info("Removing policies - Asset not found - " + assetId);
+        return false;
+    }
+    log.Info("Removing policies - Asset found, AssetId : " + asset.Id);
+
     // Delete Locators    
     List<ILocator> locators = new List<ILocator>(asset.Locators);
     foreach (var loc in locators)
@@ -136,9 +156,9 @@ static public void DeleteMultiDrmAuthorizationPolicyToAsset(IAsset asset, TraceW
         {
             asset.ContentKeys.Remove(key);
             log.Info("Removed Content Key (" + key.Id + " = " + key.Name + ") from Asset " + asset.Id);
-            //key.Delete();
         }
     }
+    return true;
 }
 
 static public IContentKey CreateContentKeyCommonType()
