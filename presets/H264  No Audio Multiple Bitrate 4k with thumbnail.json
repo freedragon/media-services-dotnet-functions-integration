@@ -162,6 +162,13 @@
       "Type": "H264Video"
     },
     {
+      "Channels": 2,
+      "SamplingRate": 44100,
+      "Bitrate": 96,
+      "Type": "AACAudio",
+      "Condition": "InsertSilenceIfNoAudio"
+    },
+    {
       "Start": "{Best}",
       "Type": "PngImage",
       "PngLayers": [
