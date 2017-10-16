@@ -7,8 +7,8 @@
         {
           "Profile": "Auto",
           "Level": "auto",
-          "Bitrate": 60000,
-          "MaxBitrate": 60000,
+          "Bitrate": 45000,
+          "MaxBitrate": 45000,
           "BufferWindow": "00:00:05",
           "Width": 3840,
           "Height": 2160,
@@ -37,20 +37,6 @@
           "Level": "auto",
           "Bitrate": 12000,
           "MaxBitrate": 12000,
-          "BufferWindow": "00:00:05",
-          "Width": 2560,
-          "Height": 1440,
-          "BFrames": 3,
-          "ReferenceFrames": 3,
-          "AdaptiveBFrame": true,
-          "Type": "H264Layer",
-          "FrameRate": "0/1"
-        },
-        {
-          "Profile": "Auto",
-          "Level": "auto",
-          "Bitrate": 9000,
-          "MaxBitrate": 9000,
           "BufferWindow": "00:00:05",
           "Width": 2560,
           "Height": 1440,
@@ -176,11 +162,11 @@
       "Type": "H264Video"
     },
     {
-      "Profile": "AACLC",
       "Channels": 2,
-      "SamplingRate": 48000,
-      "Bitrate": 128,
-      "Type": "AACAudio"
+      "SamplingRate": 44100,
+      "Bitrate": 96,
+      "Type": "AACAudio",
+      "Condition": "InsertSilenceIfNoAudio"
     },
     {
       "Start": "{Best}",
