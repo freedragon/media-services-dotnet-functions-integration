@@ -137,8 +137,7 @@
           "MaxBitrate": 650,
           "BufferWindow": "00:00:05",
           "Width": 640,
-
-"Height": 360,
+          "Height": 360,
           "BFrames": 3,
           "ReferenceFrames": 3,
           "AdaptiveBFrame": true,
@@ -161,6 +160,13 @@
         }
       ],
       "Type": "H264Video"
+    },
+    {
+      "Channels": 2,
+      "SamplingRate": 44100,
+      "Bitrate": 96,
+      "Type": "AACAudio",
+      "Condition": "InsertSilenceIfNoAudio"
     },
     {
       "Start": "{Best}",
