@@ -11,6 +11,7 @@ public class IngestSource
 public class AssetFile
 {
     public string FileName { get; set; }
+    public string MD5Hash { get; set; } // added by yonghp
     public bool IsPrimary { get; set; }
 }
 
