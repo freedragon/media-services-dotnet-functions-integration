@@ -78,6 +78,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
         // Create Asset
         newAsset = _context.Assets.Create(config.IngestAsset.AssetName, config.IngestAsset.CreationOption);
+        
         log.Info("Created Azure Media Services Asset : ");
         log.Info("  - Asset Name = " + config.IngestAsset.AssetName);
         log.Info("  - Asset Creation Option = " + config.IngestAsset.CreationOption);
@@ -86,6 +87,26 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         CloudBlobContainer sourceBlobContainer = GetCloudBlobContainer(_sourceStorageAccountName, _sourceStorageAccountKey, config.IngestSource.SourceContainerName);
         CloudBlobContainer destinationBlobContainer = GetCloudBlobContainer(_storageAccountName, _storageAccountKey, newAsset.Uri.Segments[1]);
         sourceBlobContainer.CreateIfNotExists();
+
+        // Match MD5 hash's specified in the config file for copy completion verification
+        var assetFiles = config.IngestAsset.AssetFiles;
+
+        foreach (var assetFile in AssetFiles)
+        {
+            var paramMD5 = assetfile.MD5Hash;
+            var blob = sourceBlobContainer.GetBlockBlobReference(assetFile.FileName);
+            blob.FetchAttributes();
+            var blobMD5 = blob.Properties.ContentMD5;
+            log.Info("  - Asset FileName = " + assetFile.FileName);
+            log.Info("  - MD5 Hashs from Parameter = " + paramMD5);
+            log.Info("  - MD5 Hashs from Blob = " + blobMD5);
+            if (!paramMD5.Equals(blobMD5)) {
+                var exceptionMsg = "MD5 Hash Mispatch. Corrupted source asset found. Expected '" + paramMD5 + "' instead of '" + blobMD5 + "'.";
+                log.Info(exceptionMsg);
+                throw(new Exception(exceptionMsg));
+            }
+        }
+
         // Copy Source Blob container into Destination Blob container that is associated with the asset.
         CopyBlobsAsync(sourceBlobContainer, destinationBlobContainer, log);
     }
