@@ -93,13 +93,16 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
         foreach (var assetFile in assetFiles)
         {
-            var paramMD5 = assetFile.MD5Hash;
+            log.Info("  - Asset FileName = " + assetFile.FileName);
+
             var blob = sourceBlobContainer.GetBlockBlobReference(assetFile.FileName);
             blob.FetchAttributes();
             var blobMD5 = blob.Properties.ContentMD5;
-            log.Info("  - Asset FileName = " + assetFile.FileName);
-            log.Info("  - MD5 Hashs from Parameter = " + paramMD5);
             log.Info("  - MD5 Hashs from Blob = " + blobMD5);
+
+            var paramMD5 = assetFile.MD5Hash;
+            log.Info("  - MD5 Hashs from Parameter = " + paramMD5);
+
             if (!paramMD5.Equals(blobMD5)) {
                 var exceptionMsg = "MD5 Hash Mispatch. Corrupted source asset found. Expected '" + paramMD5 + "' instead of '" + blobMD5 + "'.";
                 log.Info(exceptionMsg);
