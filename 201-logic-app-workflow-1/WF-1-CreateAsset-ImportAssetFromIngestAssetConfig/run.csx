@@ -100,7 +100,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             blob.FetchAttributes();
             var blobMD5 = blob.Properties.ContentMD5;
             log.Info("  - MD5 Hashs from Blob = " + blobMD5);
-
+            /*
             var paramMD5 = assetFile.MD5Hash;
             log.Info("  - MD5 Hashs from Parameter = " + paramMD5);
 
@@ -108,7 +108,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                 var exceptionMsg = "MD5 Hash Mispatch. Corrupted source asset found. Expected '" + paramMD5 + "' instead of '" + blobMD5 + "'.";
                 log.Info(exceptionMsg);
                 throw (new Exception(exceptionMsg));
-            }
+            }*/
         }
 
         CloudBlobContainer destinationBlobContainer = GetCloudBlobContainer(_storageAccountName, _storageAccountKey, newAsset.Uri.Segments[1]);
