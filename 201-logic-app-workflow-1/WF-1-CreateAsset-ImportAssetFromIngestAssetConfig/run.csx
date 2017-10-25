@@ -91,9 +91,9 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         // Match MD5 hash's specified in the config file for copy completion verification
         var assetFiles = config.IngestAsset.AssetFiles;
 
-        foreach (var assetFile in AssetFiles)
+        foreach (var assetFile in assetFiles)
         {
-            var paramMD5 = assetfile.MD5Hash;
+            var paramMD5 = assetFile.MD5Hash;
             var blob = sourceBlobContainer.GetBlockBlobReference(assetFile.FileName);
             blob.FetchAttributes();
             var blobMD5 = blob.Properties.ContentMD5;
@@ -103,7 +103,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
             if (!paramMD5.Equals(blobMD5)) {
                 var exceptionMsg = "MD5 Hash Mispatch. Corrupted source asset found. Expected '" + paramMD5 + "' instead of '" + blobMD5 + "'.";
                 log.Info(exceptionMsg);
-                throw(new Exception(exceptionMsg));
+                throw (new Exception(exceptionMsg));
             }
         }
 
