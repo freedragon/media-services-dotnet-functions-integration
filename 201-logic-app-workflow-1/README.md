@@ -17,7 +17,7 @@ to ingesting content directly from blob storage, encoding, and writing content b
 
 Create a Media Services account in your subscription if don't have it already.
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fshigeyf%2FDeployAzureMediaServices%2Fmaster%2Fazuredeploy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffreedragon%2FDeployAzureMediaServices%2Fmaster%2Fazuredeploy.json)
 
 ### 2. Create a Service Principal
 
@@ -69,7 +69,7 @@ Note : if you never provided your GitHub account in the Azure portal before, the
 
 ### 1. Deploy Logic App 
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fshigeyf%2Fmedia-services-dotnet-functions-integration%2Fmaster%2F201-logic-app-workflow-1%2Fazuredeploy-logic-app-workflow-blobtrigger.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffreedragon%2Fmedia-services-dotnet-functions-integration%2Fmaster%2F201-logic-app-workflow-1%2Fazuredeploy-logic-app-workflow-blobtrigger.json)
 
   * This deployment script will create a Logic App which is using the Azure Functions deployed above
   * Please refer the next section if you will deploy manually
